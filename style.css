@@ -1,0 +1,167 @@
+html {
+  box-sizing: border-box;
+  background-color: #74B1BE;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+ font-family:
+ -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans,
+  Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+ line-height: 1.4;
+}
+
+.container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #333;
+  height: 80vh;
+  margin-top: 5vh;
+  overflow-y: auto;
+
+}
+
+.app-title {
+color: #ffffff;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 62px;
+  opacity: 0.8;
+}
+
+ul {
+    max-width: 90%
+}
+
+li {
+    max-width: 90%
+}
+
+svg {
+  width: 64px;
+  height: 64px;
+}
+
+.todo-list {
+  list-style: none;
+  margin-bottom: 20px;
+}
+
+.todo-list:empty {
+  display: none;
+}
+
+.todo-list:empty + .empty-state {
+  display: flex;
+}
+
+.todo-item {
+  margin-bottom: 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.todo-item span {
+  flex-grow: 1;
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 22px;
+}
+
+.done span {
+  text-decoration: line-through;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+.tick {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+
+  border: 3px solid #333;
+  border-radius: 50%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.tick::before {
+  content: '✓';
+  font-size: 20px;
+  display: none;
+}
+
+.done .tick::before {
+  display: inline;
+}
+
+.delete-todo {
+  border: none;
+  background-color: transparent;
+  outline: none;
+  cursor: pointer;
+  display: inline-flex;
+}
+
+.delete-todo svg {
+  width: 30px;
+  height: 30px;
+  pointer-events: none;
+}
+
+form {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+}
+
+input[type="text"] {
+    font-size: 14pt;
+  width: 700px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 3px solid #ffffff;
+}
+
+
+textarea:focus, input:focus{
+    box-shadow: 0px 0px 35px #333;
+    outline:none;
+}
+
+.empty-state {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  display: none;
+}
+
+.input-window {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    display: none;
+    margin-bottom: 5vh;
+}
+
+.checklist-icon {
+  margin-bottom: 5vh;
+}
+
+.empty-state__title, .empty-state__description {
+  margin-bottom: 5vh;
+}
