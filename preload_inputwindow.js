@@ -10,7 +10,7 @@ contextBridge.exposeInMainWorld(
     "api", {
         send: (channel, data) => {
             // whitelist channels
-            let validChannels = ["toMain", "newThought"];
+            let validChannels = ["toMain", "newThought", "closeInputWindow"];
             if (validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
             }

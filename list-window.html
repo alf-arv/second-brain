@@ -108,6 +108,31 @@
         })
     });
 
+    function reloadList() {
+        todoItems.forEach((i) => {
+            renderTodo(i)
+        });
+    }
+
+    window.api.receive("importSaveState", (state) => {
+        console.log(`save state recieved: ${state} `);
+        if (todoItems.length == 0) {
+            todoItems = JSON.parse(state);
+        }
+        reloadList();
+    });
+
+    // TEMPORARY TESTING KEYLISTENER
+    function keyPress (e){
+      if (e.key == "Escape"){
+          console.log("esc pressed")
+          window.api.send("exportSaveState", JSON.stringify(todoItems))
+      }
+    }
+    document.addEventListener("keyup", keyPress);
+
+    // cloning the list to not screw up references
+    //window.api.send("exportSaveState", JSON.parse(JSON.stringify(todoItems)))
 
     // TODO: Remove ?
     window.api.receive("fromMain", (data) => {

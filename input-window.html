@@ -14,6 +14,21 @@
             window.api.send("newThought", text);
         }
 
+        function keyPress (e){
+          if (e.key == "Escape"){
+              console.log("esc pressed")
+              window.api.send("closeInputWindow");
+          }
+        }
+        document.addEventListener("keyup", keyPress);
+
+        /*document.body.addEventListener('keypress', function(e) {
+          if (e.key == "Escape") {
+            console.log("esc pressed")
+            window.api.send("closeInputWindow");
+          }
+      });*/
+
 
         const form = document.querySelector('.js-form');
         form.addEventListener('submit', event => {

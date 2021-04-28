@@ -1,9 +1,11 @@
 const { app, BrowserWindow, globalShortcut, Menu } = require('electron')
-const { ipcMain } = require('electron');
+const { ipcMain } = require('electron')
+const fs  = require('fs')
 const path = require('path')
 
 let listWindow
 let inputWindow
+
 
 // Menu bar configuration
 const isMac = process.platform === 'darwin';
@@ -34,7 +36,33 @@ const template = [
 const menu = Menu.buildFromTemplate(template)
 Menu.setApplicationMenu(menu)
 
+temp_path = path.join(app.getPath("temp"), 'second-brain')
 
+
+// create the savestate directory...
+if (!fs.existsSync(temp_path)){
+    fs.mkdir(temp_path, (err) => {
+        if (err) {
+            return console.error(err);
+        } else {
+            console.log("directory for temp data successfully created")
+        }
+    })
+}
+// ... and file
+if (!fs.existsSync(path.join(temp_path, 'savestate'))){
+    fs.writeFile(path.join(temp_path, 'savestate'), '', (err) => {
+        if(err) {
+            console.log(err)
+        } else {
+            console.log("savestate file successfully created")
+        }
+
+    })
+}
+
+
+// windows
 function renderListWindow(){
     if (listWindow == null) {
         listWindow = new BrowserWindow({
@@ -52,29 +80,14 @@ function renderListWindow(){
 
         listWindow.setResizable(false);
 
-        // This is code to let the application not quit when X is pressed
-        //listWindow.on('close', (event) => {
-        //    if (app.quitting) {
-        //      listWindow = null
-        //    } else {
-        //      event.preventDefault()
-        //      listWindow.hide()
-        //    }
-        }
+        // read and send save state
+        let savestate = fs.readFileSync(path.join(temp_path,'savestate'), 'utf8')
+        listWindow.webContents.send("importSaveState", savestate)
+
+    }
 }
 
-
-ipcMain.on("newThought", (event, data) => {
-    //console.log(`Recieved a thought from the input window: ${data}. `)
-    inputWindow.close();
-    inputWindow = null;
-    listWindow.webContents.send("todoItem", data);
-    listWindow.webContents.send("reloadList");
-})
-
-
 function renderInputWindow(){
-
     inputWindow = new BrowserWindow({
         width: 800,
         height: 250,
@@ -84,19 +97,66 @@ function renderInputWindow(){
           preload: path.join(__dirname, 'preload_inputwindow.js')
         }
     })
-    inputWindow.loadFile('input-window.html')
+    inputWindow.loadFile('input-window.html');
+    inputWindow.setResizable(false);
 }
 
 
+// utility functions
+function exportSaveState(data){
+    savestateLocation = path.join(temp_path, 'savestate');
+    //state = JSON.parse(data)
+    if (fs.existsSync(savestateLocation)){
+        fs.unlinkSync(savestateLocation, (err) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("old savestate deleted")
+            }
+        })
+        fs.appendFile(savestateLocation, data/*JSON.stringify(state)*/, (err) => {
+            if (err) {
+                console.log(err);
+            }
+        })
+    } else {
+        console.log("No file exists, and no state could therefore be saved.")
+    }
+}
+
+
+// Listeners
+ipcMain.on("newThought", (event, data) => {
+    inputWindow.close();
+    inputWindow = null;
+    listWindow.webContents.send("todoItem", data);
+    listWindow.webContents.send("reloadList");
+})
+
+ipcMain.on("closeInputWindow", (event) => {
+    inputWindow.close();
+    inputWindow = null;
+})
+
+ipcMain.on("exportSaveState", (event, data) => {
+    exportSaveState(data)
+})
+
+
+// application behaviour
 app.whenReady().then(() => {
   renderListWindow();
 })
-
 
 app.whenReady().then(() => {
   globalShortcut.register('Alt+CommandOrControl+I', () => {
       if (inputWindow == null){
           renderInputWindow()
+      }
+
+      else if (inputWindow.isFocused()) {
+          inputWindow.close();
+          inputWindow = null;
       }
   })
 
