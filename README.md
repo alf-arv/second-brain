@@ -5,17 +5,21 @@ Store thoughts, ideas and sidetracks in a hidden to-do list as they appear, with
 
 ## Shortcuts and interface
 
-- **Ctrl/Cmd+alt+I** : Insert new thought
+### **Ctrl/Cmd+alt+I** : Insert new thought
 
 The field pops up in the foreground and is automatically focused, press enter to save the thought.
 
 ![popup-gif](./readme_assets/popup_preview.gif)
 
-- **Ctrl/Cmd+alt+B** : Open the list of stored-away thoughts
+<hr>
+
+### **Ctrl/Cmd+alt+B** : Open the list of stored-away thoughts
 
 Use the left circle to tick a task, or delete entries with the delete button. Closing this window will exit the application, while minimizing it will hide it invisible from the taskbar/dock.
 
 ![todolist-prev](./readme_assets/todolist_preview.png)
+
+<hr>
 
 ### Custom keyboard Shortcuts
 Change the active shortcuts that the application listens to by specifying your preferred keyboard combinations in the ```globalShortcut.register()``` calls, in the bottom of **app.js**.
