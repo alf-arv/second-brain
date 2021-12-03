@@ -17,6 +17,9 @@ Use the left circle to tick a task, or delete entries with the delete button. Cl
 
 ![todolist-prev](./readme_assets/todolist_preview.png)
 
+### Custom keyboard Shortcuts
+Change the active shortcuts that the application listens to by specifying your preferred keyboard combinations in the ```globalShortcut.register()``` calls, in the bottom of **app.js**.
+
 ## How to run
 
 ### NodeJS
