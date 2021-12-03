@@ -1,0 +1,49 @@
+
+<html style="background-color:transparent;">
+<main>
+    <link rel = "stylesheet" type = "text/css" href = "style.css">
+    <div class="container" style= "padding-top: 40px; color: #ffffff; padding-left: 40px; padding-right:40px; padding-bottom:40px">
+        <h2 style="padding-bottom:20px; text-shadow: 2px 2px 25px #000000;">Add new thought... </h2>
+        <form class="js-form">
+            <input autofocus type="text" aria-label="Enter a new item" placeholder="I need to ..." class="js-todo-input">
+        </form>
+    </div>
+
+    <script>
+        function addTodo(text){
+            window.api.send("newThought", text);
+        }
+
+        function keyPress (e){
+          if (e.key == "Escape"){
+              console.log("esc pressed")
+              window.api.send("closeInputWindow");
+          }
+        }
+        document.addEventListener("keyup", keyPress);
+
+        /*document.body.addEventListener('keypress', function(e) {
+          if (e.key == "Escape") {
+            console.log("esc pressed")
+            window.api.send("closeInputWindow");
+          }
+      });*/
+
+
+        const form = document.querySelector('.js-form');
+        form.addEventListener('submit', event => {
+            event.preventDefault();
+            // select text input
+            const input = document.querySelector('.js-todo-input');
+
+            // Get the value and remove whitespace
+            const text = input.value.trim();
+            if (text !== '') {
+                addTodo(text);
+                input.value = '';
+                input.focus();
+            }
+        });
+    </script>
+</main>
+</html>
